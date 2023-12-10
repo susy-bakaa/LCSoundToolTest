@@ -1,0 +1,2 @@
+xcopy /y "$(TargetDir)$(TargetName).dll" "C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest"
+xcopy /y "$(TargetDir)\Sounds\*" "C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest"
