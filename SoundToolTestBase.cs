@@ -13,7 +13,7 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
     {
         private const string PLUGIN_GUID = "LCSoundToolTest";
         private const string PLUGIN_NAME = "LC Sound Tool Test";
-        private const string PLUGIN_VERSION = "1.2.1";
+        private const string PLUGIN_VERSION = "1.2.2";
 
         public static SoundToolTestBase Instance;
 
@@ -85,10 +85,20 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             // For the test%Number.wav files, we just use them to replace one of the main menu button sounds with two random clips other with a chance of 67% and other with 33%. Check LCSoundTool's page for more info.
             SoundTool.ReplaceAudioClip("Button2", randomSound1);
             SoundTool.ReplaceAudioClip("Button2", randomSound2);
+
+            // Absolutely before doing anything with networking we need to check if the user has LCSoundTool networking toggled on. If not we can not do any networking. Here you can inform them with a message that your mod wont work without it on!
+            if (!SoundTool.networkingAvailable)
+            {
+                logger.LogWarning("LCSoundTool networking not enabled! This mod will not work fully and might run into problems.");
+            }
         }
 
         private void Update()
         {
+            // Same check here.
+            if (!SoundTool.networkingAvailable)
+                return;
+
             // For networked audio clips we wanna first make sure the network handler has been created. This happens after joining a lobby so networked sounds can not be sent or received before that.
             if (!SoundTool.networkingInitialized)
                 return;
