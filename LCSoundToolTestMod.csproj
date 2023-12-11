@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>LCSoundToolTest</AssemblyName>
         <Description>Replaces 2 menu button sounds. Useful for testing if LCSoundTool works.</Description>
-        <Version>1.0.0</Version>
+        <Version>1.2.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -71,10 +71,10 @@
       <None Update="Sounds\test.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Sounds\test_33.wav">
+      <None Update="Sounds\test-33.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Sounds\test_67.wav">
+      <None Update="Sounds\test-67.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

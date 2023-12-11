@@ -13,7 +13,7 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
     {
         private const string PLUGIN_GUID = "LCSoundToolTest";
         private const string PLUGIN_NAME = "LC Sound Tool Test";
-        private const string PLUGIN_VERSION = "1.2.0";
+        private const string PLUGIN_VERSION = "1.2.1";
 
         public static SoundToolTestBase Instance;
 
@@ -69,14 +69,14 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             // Here we get all of the sounds from the mods folder
             music = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "music_test.wav");
             sound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test.wav");
-            randomSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test_33.wav");
-            randomSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test_67.wav");
+            randomSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test-33.wav");
+            randomSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test-67.wav");
             networkedSound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "network_test.wav");
             // For some reason Unity doesn't always get the name of the sound clip which can cause problems
             music.name = "music_test";
             sound.name = "test";
-            randomSound1.name = "test_33";
-            randomSound2.name = "test_67";
+            randomSound1.name = "test-33";
+            randomSound2.name = "test-67";
             networkedSound.name = networkedSoundName;
 
             // For the test.wav, we just use it to replace one of the main menu button sounds nothing special here. Check LCSoundTool's page for more info.
