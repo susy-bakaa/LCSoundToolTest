@@ -1,19 +1,21 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 using UnityEngine;
 using LCSoundTool;
-using HarmonyLib;
-using no00ob.Mod.LethalCompany.LCSoundToolTestMod.Patches;
-using BepInEx.Configuration;
+using no00ob.Mod.LethalCompany.LCSoundToolTest.Patches;
 
 namespace no00ob.Mod.LethalCompany.LCSoundToolTest
 {
-    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
+    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, LCSoundToolTestMod.PluginInfo.PLUGIN_VERSION)]
     public class SoundToolTestBase : BaseUnityPlugin
     {
         private const string PLUGIN_GUID = "LCSoundToolTest";
         private const string PLUGIN_NAME = "LC Sound Tool Test";
-        private const string PLUGIN_VERSION = "1.2.2";
+        //private const string PLUGIN_VERSION = "1.2.3";
+
+        private ConfigEntry<string> configFileType;
 
         public static SoundToolTestBase Instance;
 
@@ -51,6 +53,8 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
                 Instance = this;
             }
 
+            configFileType = Config.Bind("General", "AudioFileType", "wav", "Which audio file type do you want the test mod to use? Valid values are 'wav', 'ogg' and 'mp3'");
+
             logger = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_GUID);
 
             logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
@@ -66,13 +70,14 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
 
         private void Start()
         {
-            // Here we get all of the sounds from the mods folder
-            music = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "music_test.wav");
-            sound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test.wav");
-            randomSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test-33.wav");
-            randomSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "test-67.wav");
-            networkedSound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", "network_test.wav");
-            // For some reason Unity doesn't always get the name of the sound clip which can cause problems
+            // Here we get all of the sounds from the mods folder. They're located inside subfolder defined by the file type config value. Which can be 'wav', 'ogg' or 'mp3'
+            music = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"music_test.{configFileType.Value}");
+            sound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"test.{configFileType.Value}");
+            randomSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"test-33.{configFileType.Value}");
+            randomSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"test-67.{configFileType.Value}");
+            networkedSound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"network_test.{configFileType.Value}");
+            // For some reason Unity doesn't always get the name of the sound clip which can cause problems.
+            // This should be fixed in LCSoundTool v.1.3.0 onwards, but it's here for preservations sake and never hurts to define them manually just in case.
             music.name = "music_test";
             sound.name = "test";
             randomSound1.name = "test-33";
@@ -82,7 +87,7 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             // For the test.wav, we just use it to replace one of the main menu button sounds nothing special here. Check LCSoundTool's page for more info.
             SoundTool.ReplaceAudioClip("Button3", sound);
 
-            // For the test%Number.wav files, we just use them to replace one of the main menu button sounds with two random clips other with a chance of 67% and other with 33%. Check LCSoundTool's page for more info.
+            // For the test-chance.wav files, we just use them to replace one of the main menu button sounds with two random clips other with a chance of 67% and other with 33%. Check LCSoundTool's page for more info.
             SoundTool.ReplaceAudioClip("Button2", randomSound1);
             SoundTool.ReplaceAudioClip("Button2", randomSound2);
 

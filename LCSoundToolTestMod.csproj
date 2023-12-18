@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>LCSoundToolTest</AssemblyName>
         <Description>Replaces 2 menu button sounds. Useful for testing if LCSoundTool works.</Description>
-        <Version>1.2.2</Version>
+        <Version>1.3.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -15,6 +15,9 @@
       <None Remove="LICENSE" />
       <None Remove="README.md" />
       <None Remove="Sounds\desktop.ini" />
+      <None Remove="Sounds\mp3\desktop.ini" />
+      <None Remove="Sounds\ogg\desktop.ini" />
+      <None Remove="Sounds\wav\desktop.ini" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,16 +59,61 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Sounds\mp3\music_test.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\network_test.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\test-33.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\test-67.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\test.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\music_test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\network_test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Sounds\network_test.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\music_test.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Sounds\ogg\music_test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\network_test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\test-33.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\test-67.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Sounds\test%2533.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\test%2567.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\test-33.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\test-67.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\test.ogg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\test.wav">
@@ -77,9 +125,24 @@
       <None Update="Sounds\test-67.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Sounds\wav\music_test.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\network_test.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\test-33.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\test-67.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\test.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="xcopy /y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)\Sounds\*&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest&quot;" />
+      <Exec Command="xcopy /y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)\Sounds\*&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)\Sounds\mp3\*&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest\mp3\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)\Sounds\ogg\*&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest\ogg\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)\Sounds\wav\*&quot; &quot;C:\Users\Aki\AppData\Roaming\r2modmanPlus-local\LethalCompany\profiles\SoundTest\BepInEx\plugins\no00ob-LCSoundToolTest\wav\&quot;" />
     </Target>
 </Project>

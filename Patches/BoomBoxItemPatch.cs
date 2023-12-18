@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HarmonyLib;
-using no00ob.Mod.LethalCompany.LCSoundToolTest;
+﻿using HarmonyLib;
 using UnityEngine;
 
-namespace no00ob.Mod.LethalCompany.LCSoundToolTestMod.Patches
+namespace no00ob.Mod.LethalCompany.LCSoundToolTest.Patches
 {
     [HarmonyPatch(typeof(BoomboxItem))]
     internal class BoomBoxItemPatch
