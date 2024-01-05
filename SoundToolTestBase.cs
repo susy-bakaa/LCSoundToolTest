@@ -5,6 +5,7 @@ using HarmonyLib;
 using UnityEngine;
 using LCSoundTool;
 using no00ob.Mod.LethalCompany.LCSoundToolTest.Patches;
+using LCSoundTool.Resources;
 
 namespace no00ob.Mod.LethalCompany.LCSoundToolTest
 {
@@ -28,23 +29,47 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
         public KeyboardShortcut removeNetworkAudioTest;
         public KeyboardShortcut logNetworkAudioTest;
         public KeyboardShortcut syncNetworkAudioTest;
+        public KeyboardShortcut toggleSourceAudioTest1;
+        public KeyboardShortcut toggleSourceAudioTest2;
+        public KeyboardShortcut playSourceAudioTest1;
+        public KeyboardShortcut playSourceAudioTest2;
+        public KeyboardShortcut playSourceAudioTest3;
         public bool wasKeyDown;
         public bool wasKeyDown2;
         public bool wasKeyDown3;
         public bool wasKeyDown4;
+        public bool wasKeyDown5;
+        public bool wasKeyDown6;
+        public bool wasKeyDown7;
+        public bool wasKeyDown8;
+        public bool wasKeyDown9;
 
-        // All of the 3 different audio clips we are utilizing
+        // Bundle
+        internal static AssetBundle bundle;
+
+        // All of the 7 different audio clips we are utilizing
         public static AudioClip music;
         public static AudioClip sound;
         public static AudioClip randomSound1;
         public static AudioClip randomSound2;
         public static AudioClip networkedSound;
+        public static AudioClip sourceTestSound1;
+        public static AudioClip sourceTestSound2;
+        public static AudioClip sourceTestSound3;
 
         // The sound we are replacing with the networkedSound audio clip
         public static string networkedSoundName = "Scan";
 
-        // Bool for events
+        // Flags, one for events and another few for custom source dependant audio testing states
         bool subbed;
+        bool swapped1;
+        bool swapped2;
+
+        // Custom source dependant audio testing gameobject references
+        private static GameObject testingObjectInstance;
+        private static AudioSource source1;
+        private static AudioSource source2;
+        private static AudioSource source3;
 
         private void Awake()
         {
@@ -59,11 +84,22 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
 
             logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
 
+            // AssetBundle for custom source dependant audio testing gameobject
+            bundle = AssetBundle.LoadFromMemory(LCSoundToolTestMod.Properties.Resources.soundtooltest);
+
             // Setup the keybinds, F3 -> Send networked audio clip & F4 -> Remove networked audio clip
+            // F9 -> Debug log about networked audio clips, F10 -> Sync hosts networked clips to all clients
+            // F1, F1 + Ctrl, F1 + Alt -> Play test sounds for audio source dependant sound feature
+            // F2 -> Toggle the previous test's sounds replacement sounds on and off
             sendNetworkAudioTest = new KeyboardShortcut(KeyCode.F3, new KeyCode[0]);
             removeNetworkAudioTest = new KeyboardShortcut(KeyCode.F4, new KeyCode[0]);
             logNetworkAudioTest = new KeyboardShortcut(KeyCode.F9, new KeyCode[0]);
             syncNetworkAudioTest = new KeyboardShortcut(KeyCode.F10, new KeyCode[0]);
+            playSourceAudioTest1 = new KeyboardShortcut(KeyCode.F1, new KeyCode[0]);
+            playSourceAudioTest2 = new KeyboardShortcut(KeyCode.F1, new KeyCode[1] { KeyCode.LeftControl });
+            playSourceAudioTest3 = new KeyboardShortcut(KeyCode.F1, new KeyCode[1] { KeyCode.LeftAlt });
+            toggleSourceAudioTest1 = new KeyboardShortcut(KeyCode.F1, new KeyCode[1] { KeyCode.LeftShift });
+            toggleSourceAudioTest2 = new KeyboardShortcut(KeyCode.F1, new KeyCode[2] { KeyCode.LeftShift, KeyCode.LeftControl });
 
             harmony.PatchAll(typeof(BoomBoxItemPatch));
         }
@@ -76,6 +112,9 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             randomSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"test-33.{configFileType.Value}");
             randomSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"test-67.{configFileType.Value}");
             networkedSound = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"network_test.{configFileType.Value}");
+            sourceTestSound1 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"stt_test-_TestSource1,TestSource2-33.{configFileType.Value}");
+            sourceTestSound2 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"stt_test-_TestSource1,TestSource2-67.{configFileType.Value}");
+            sourceTestSound3 = SoundTool.GetAudioClip("no00ob-LCSoundToolTest", configFileType.Value, $"stt_test-_TestSource3.{configFileType.Value}");
             // For some reason Unity doesn't always get the name of the sound clip which can cause problems.
             // This should be fixed in LCSoundTool v.1.3.0 onwards, but it's here for preservations sake and never hurts to define them manually just in case.
             music.name = "music_test";
@@ -83,6 +122,9 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             randomSound1.name = "test-33";
             randomSound2.name = "test-67";
             networkedSound.name = networkedSoundName;
+            sourceTestSound1.name = "stt_test-_TestSource1,TestSource2-33";
+            sourceTestSound2.name = "stt_test-_TestSource1,TestSource2-67";
+            sourceTestSound3.name = "stt_test-_TestSource3";
 
             // For the test.wav, we just use it to replace one of the main menu button sounds nothing special here. Check LCSoundTool's page for more info.
             SoundTool.ReplaceAudioClip("Button3", sound);
@@ -129,6 +171,107 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
                 wasKeyDown4 = false;
                 Instance.logger.LogDebug($"Syncing all currently networked clips...");
                 SoundTool.SyncNetworkedAudioClips();
+                return;
+            }
+
+            if (toggleSourceAudioTest1.IsDown() && !wasKeyDown5)
+            {
+                wasKeyDown5 = true;
+            }
+            if (toggleSourceAudioTest1.IsUp() && wasKeyDown5)
+            {
+                wasKeyDown5 = false;
+                swapped1 = !swapped1;
+                Instance.logger.LogDebug($"Toggled source audio test 1 & 2! {swapped1}");
+                if (swapped1)
+                {
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound1);
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound2);
+                }
+                else
+                {
+                    SoundTool.RestoreAudioClip("stt_test");
+                }
+                return;
+            }
+
+            if (toggleSourceAudioTest2.IsDown() && !wasKeyDown9)
+            {
+                wasKeyDown9 = true;
+            }
+            if (toggleSourceAudioTest2.IsUp() && wasKeyDown9)
+            {
+                wasKeyDown9 = false;
+                swapped2 = !swapped2;
+                Instance.logger.LogDebug($"Toggled source audio test 3! {swapped2}");
+                if (swapped2)
+                {
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound3);
+                }
+                else
+                {
+                    SoundTool.RestoreAudioClip("stt_test", sourceTestSound3);
+                }
+                return;
+            }
+
+            if (playSourceAudioTest1.IsDown() && !wasKeyDown6)
+            {
+                wasKeyDown6 = true;
+            }
+            if (playSourceAudioTest1.IsUp() && wasKeyDown6)
+            {
+                wasKeyDown6 = false;
+                
+                if (testingObjectInstance == null)
+                {
+                    testingObjectInstance = GameObject.Instantiate((GameObject)bundle.LoadAsset("SoundToolTest.prefab"), GameNetworkManager.Instance.localPlayerController.gameObject.transform.position, GameNetworkManager.Instance.localPlayerController.gameObject.transform.rotation);
+                    source1 = testingObjectInstance.transform.GetChild(0).GetComponent<AudioSource>();
+                    source2 = testingObjectInstance.transform.GetChild(1).GetComponent<AudioSource>();
+                    source3 = testingObjectInstance.transform.GetChild(2).GetComponent<AudioSource>();
+                }
+
+                source1.Play();
+                return;
+            }
+
+            if (playSourceAudioTest2.IsDown() && !wasKeyDown7)
+            {
+                wasKeyDown7 = true;
+            }
+            if (playSourceAudioTest2.IsUp() && wasKeyDown7)
+            {
+                wasKeyDown7 = false;
+
+                if (testingObjectInstance == null)
+                {
+                    testingObjectInstance = GameObject.Instantiate((GameObject)bundle.LoadAsset("SoundToolTest.prefab"), GameNetworkManager.Instance.localPlayerController.gameObject.transform.position, GameNetworkManager.Instance.localPlayerController.gameObject.transform.rotation);
+                    source1 = testingObjectInstance.transform.GetChild(0).GetComponent<AudioSource>();
+                    source2 = testingObjectInstance.transform.GetChild(1).GetComponent<AudioSource>();
+                    source3 = testingObjectInstance.transform.GetChild(2).GetComponent<AudioSource>();
+                }
+
+                source2.Play();
+                return;
+            }
+
+            if (playSourceAudioTest3.IsDown() && !wasKeyDown8)
+            {
+                wasKeyDown8 = true;
+            }
+            if (playSourceAudioTest3.IsUp() && wasKeyDown8)
+            {
+                wasKeyDown8 = false;
+
+                if (testingObjectInstance == null)
+                {
+                    testingObjectInstance = GameObject.Instantiate((GameObject)bundle.LoadAsset("SoundToolTest.prefab"), GameNetworkManager.Instance.localPlayerController.gameObject.transform.position, GameNetworkManager.Instance.localPlayerController.gameObject.transform.rotation);
+                    source1 = testingObjectInstance.transform.GetChild(0).GetComponent<AudioSource>();
+                    source2 = testingObjectInstance.transform.GetChild(1).GetComponent<AudioSource>();
+                    source3 = testingObjectInstance.transform.GetChild(2).GetComponent<AudioSource>();
+                }
+
+                source3.Play();
                 return;
             }
 

@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>LCSoundToolTest</AssemblyName>
         <Description>Replaces 2 menu button sounds. Useful for testing if LCSoundTool works.</Description>
-        <Version>1.3.0</Version>
+        <Version>1.4.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
@@ -59,10 +59,34 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
       <None Update="Sounds\mp3\music_test.mp3">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\mp3\network_test.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\stt_test-_TestSource1,TestSource2-33.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\stt_test-_TestSource1,TestSource2-67.mp3">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\mp3\stt_test-_TestSource3.mp3">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\mp3\test-33.mp3">
@@ -90,6 +114,15 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\ogg\network_test.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\stt_test-_TestSource1,TestSource2-33.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\stt_test-_TestSource1,TestSource2-67.ogg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\ogg\stt_test-_TestSource3.ogg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\ogg\test-33.ogg">
@@ -129,6 +162,15 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\wav\network_test.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\stt_test-_TestSource1,TestSource2-33.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\stt_test-_TestSource1,TestSource2-67.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Sounds\wav\stt_test-_TestSource3.wav">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Sounds\wav\test-33.wav">

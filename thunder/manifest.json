@@ -1,0 +1,10 @@
+{
+    "name": "LCSoundToolTest",
+    "version_number": "1.3.0",
+    "website_url": "",
+    "description": "Adds 1 custom track to the boombox. Other various audio related tests.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+		"no00ob-LCSoundTool-1.4.0"
+    ]
+}
