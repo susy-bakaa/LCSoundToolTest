@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>LCSoundToolTest</AssemblyName>
         <Description>Replaces 2 menu button sounds. Useful for testing if LCSoundTool works.</Description>
-        <Version>1.4.0</Version>
+        <Version>1.4.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>

@@ -130,8 +130,8 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
             SoundTool.ReplaceAudioClip("Button3", sound);
 
             // For the test-chance.wav files, we just use them to replace one of the main menu button sounds with two random clips other with a chance of 67% and other with 33%. Check LCSoundTool's page for more info.
-            SoundTool.ReplaceAudioClip("Button2", randomSound1);
-            SoundTool.ReplaceAudioClip("Button2", randomSound2);
+            SoundTool.ReplaceAudioClip("Button2", randomSound1, 0.33f);
+            SoundTool.ReplaceAudioClip("Button2", randomSound2, 0.67f);
 
             // Absolutely before doing anything with networking we need to check if the user has LCSoundTool networking toggled on. If not we can not do any networking. Here you can inform them with a message that your mod wont work without it on!
             if (!SoundTool.networkingAvailable)
@@ -185,12 +185,12 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
                 Instance.logger.LogDebug($"Toggled source audio test 1 & 2! {swapped1}");
                 if (swapped1)
                 {
-                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound1);
-                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound2);
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound1, 0.33f, new string[2] { "TestSource1", "TestSource2" });
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound2, 0.67f, "TestSource1,TestSource2");
                 }
                 else
                 {
-                    SoundTool.RestoreAudioClip("stt_test");
+                    SoundTool.RestoreAudioClip("stt_test", "TestSource1,TestSource2");
                 }
                 return;
             }
@@ -206,11 +206,11 @@ namespace no00ob.Mod.LethalCompany.LCSoundToolTest
                 Instance.logger.LogDebug($"Toggled source audio test 3! {swapped2}");
                 if (swapped2)
                 {
-                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound3);
+                    SoundTool.ReplaceAudioClip("stt_test", sourceTestSound3, "TestSource3");
                 }
                 else
                 {
-                    SoundTool.RestoreAudioClip("stt_test", sourceTestSound3);
+                    SoundTool.RestoreAudioClip("stt_test", "TestSource3");
                 }
                 return;
             }
